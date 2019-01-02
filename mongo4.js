@@ -21,53 +21,20 @@ MongoClient.connect("mongodb://127.0.0.1/4db", function(err,db){
 			res.sendFile(__dirname + '/' + 'index4.html')
 		})
 		app.post('/process_post', urlencodedParser, function(req,res){
-			//req.checkBody('name', 'Name should not empty').notEmpty();
-			//req.checkBody('usn', 'Usn should not empty').notEmpty();
-			//req.checkBody('sex', 'Sex should not empty').notEmpty();
-			//req.checkBody('sem', 'Sem should not empty').notEmpty();
-			//req.checkBody('branch', 'Branch should not empty').notEmpty();
-			//req.checkBody('college', 'College should not empty').notEmpty();
-			//req.checkBody('aadhar', 'Aadhar should not empty').notEmpty();
-			//req.checkBody('passport', 'Passport should not empty').notEmpty();
-			//req.checkBody('bank', 'Bank should not empty').notEmpty();
-
-			//req.checkBody('name', 'Name should contain only alphabets').isAlpha();
-			//req.checkBody('usn', 'Usn should contain only Integers').isInt();
-			//req.checkBody('sex', 'Sex should contain only alphabets').isAlpha();
-			//req.checkBody('sem', 'Sem should contain only Integers').isInt();
-			//req.checkBody('branch', 'Branch should contain only alphabets').isAlpha();
-			//req.checkBody('college', 'College should contain only alphabets').isAlpha();
-			//req.checkBody('aadhar', 'Aadhar should contain only Integer').isInt();
-			//req.checkBody('passport', 'Passport should contain only alphabets').isAlpha();
-			//req.checkBody('bank', 'Bank should contain only Integer').isInt();
+			var EMPID=req.body.empID
+			var NAME=req.body.name
+			var DEPT=req.body.dept
+			var DESIGNATION=req.body.desg
+			var MOB=req.body.mob
+			var EMAIL=req.body.email
 			
-			//var errors = req.validationErrors();
-			//if(errors)
-			//{
-				//res.send(errors);
-				//return;
-			//}
-			//else
-			//{
-				var EMPID=req.body.empID
-				var NAME=req.body.name
-				var DEPT=req.body.dept
-				var DESIGNATION=req.body.desg
-				var MOB=req.body.mob
-				var EMAIL=req.body.email
+			db.collection('empDetails').insert({"empID":EMPID,"Name":NAME,"dept":DEPT,"designation":DESIGNATION,"mobile":MOB,"emailId":EMAIL}, function(err,doc){
+			if(err)
+				return console.log(err)
+			})	
+			console.log("New Record Inserted");
+			res.send("<p>EMPID:"+EMPID+"</p><p>Name:"+NAME+"</p><p>DEPARTMENT:"+DEPT+"</p><p>DESIGNATION:"+DESIGNATION+"</p><p>MOB:"+MOB+"</p><p>EMAIL:"+EMAIL+"</p>");
 			
-				db.collection('empDetails').insert({"empID":EMPID,"Name":NAME,"dept":DEPT,"designation":DESIGNATION,"mobile":MOB,"emailId":EMAIL}, function(err,doc){
-				if(err)
-				
-					return console.log(err)
-					
-				else
-				
-					res.status(201).json(doc.ops[1])
-				})	
-					console.log("New Record Inserted");
-					res.send("<p>EMPID:"+EMPID+"</p><p>Name:"+NAME+"</p><p>DEPARTMENT:"+DEPT+"</p><p>DESIGNATION:"+DESIGNATION+"</p><p>MOB:"+MOB+"</p><p>EMAIL:"+EMAIL+"</p>");
-			//}
 		})
 
 		app.get('/display', function(req, res){
